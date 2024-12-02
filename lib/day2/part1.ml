@@ -20,6 +20,9 @@ let rec is_safe_dir (dir: dir) (a: int list) : bool =
 let is_safe (a: int list) : bool =
     is_safe_dir Inc a || is_safe_dir Dec a
 
-let part1 (a: (int list) list) : int =
-    let lambda = (fun acc elem -> if is_safe elem then acc + 1 else acc) in
+let count_if (f: 'a list -> bool) (a: 'a list list) : int =
+    let lambda = (fun acc elem -> if f elem then acc + 1 else acc) in
     List.fold_left lambda 0 a
+
+let part1 (a: (int list) list) : int =
+    count_if is_safe a

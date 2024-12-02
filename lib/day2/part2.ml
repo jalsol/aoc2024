@@ -12,5 +12,4 @@ let is_safe_with_drop (a: int list) : bool =
     List.exists Part1.is_safe (drop_ones a)
 
 let part2 (a: int list list) : int =
-    let lambda = (fun acc elem -> if is_safe_with_drop elem then acc + 1 else acc) in
-    List.fold_left lambda 0 a
+    Part1.count_if is_safe_with_drop a
