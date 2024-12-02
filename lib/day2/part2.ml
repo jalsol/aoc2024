@@ -1,15 +1,23 @@
-let rec gen_drop_one (acc: int list list) (index: int) (a: int list) : int list list =
-    if index < -1 then
-        acc
-    else
-        let dropped = List.filteri (fun i _ -> i <> index) a in
-        gen_drop_one (dropped :: acc) (index - 1) a
+let rec is_safe_dir (dir: Part1.dir) (removed: bool) (a: int list) : bool =
+    match a with
+    | [] -> true
+    | first :: tail ->
+        match tail with
+        | [] -> true
+        | second :: tail2 ->
+            if Part1.is_pair_safe dir first second then
+                is_safe_dir dir removed tail
+            else if removed then
+                false
+            else
+                is_safe_dir dir true (first :: tail2)
 
-let drop_ones (a: int list) =
-    gen_drop_one [] (List.length a - 1) a
-
-let is_safe_with_drop (a: int list) : bool =
-    List.exists Part1.is_safe (drop_ones a)
+let is_safe (a: int list) : bool =
+    match a with
+    | [] -> true
+    | _ :: tail ->
+        is_safe_dir Inc false a || is_safe_dir Dec false a ||
+        is_safe_dir Inc true tail || is_safe_dir Dec true tail
 
 let part2 (a: int list list) : int =
-    Part1.count_if is_safe_with_drop a
+    Part1.count_if is_safe a
