@@ -11,10 +11,11 @@ let rec parse_orders (acc : int array list) (input : string list) : int array li
     match input with
     | [] -> acc
     | head :: tail ->
-        let elem_str = String.split_on_char ',' head in
-        let elem_seq = List.to_seq elem_str in
-        let elem_arr = Array.of_seq elem_seq in
-        let order = Array.map int_of_string elem_arr in
+        let order = head
+            |> String.split_on_char ','
+            |> List.to_seq
+            |> Array.of_seq
+            |> Array.map int_of_string in
         parse_orders (order :: acc) tail
 
 let parse (input : string list) : bool array array * int array list =
