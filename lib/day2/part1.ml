@@ -8,14 +8,12 @@ let is_pair_safe (dir: dir) (first: int) (second: int) : bool =
 let rec is_safe_dir (dir: dir) (a: int list) : bool =
     match a with
     | [] -> true
-    | first :: tail ->
-        match tail with
-        | [] -> true
-        | second :: _ ->
-            if is_pair_safe dir first second then
-                is_safe_dir dir tail
-            else
-                false
+    | _ :: [] -> true
+    | first :: second :: rest ->
+        if is_pair_safe dir first second then
+            is_safe_dir dir (second :: rest)
+        else
+            false
 
 let is_safe (a: int list) : bool =
     is_safe_dir Inc a || is_safe_dir Dec a

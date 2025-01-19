@@ -1,16 +1,14 @@
 let rec is_safe_dir (dir: Part1.dir) (removed: bool) (a: int list) : bool =
     match a with
     | [] -> true
-    | first :: tail ->
-        match tail with
-        | [] -> true
-        | second :: tail2 ->
-            if Part1.is_pair_safe dir first second then
-                is_safe_dir dir removed tail
-            else if removed then
-                false
-            else
-                is_safe_dir dir true (first :: tail2)
+    | _ :: [] -> true
+    | first :: second :: rest ->
+        if Part1.is_pair_safe dir first second then
+            is_safe_dir dir removed (second :: rest)
+        else if removed then
+            false
+        else
+            is_safe_dir dir true (first :: rest)
 
 let is_safe (a: int list) : bool =
     match a with
